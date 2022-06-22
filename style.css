@@ -146,6 +146,33 @@ hr{
     display: block;
     margin: 5%;
 }
+/*Bandit*/
+.nivel{
+   
+    color:rgba(194, 195, 241, 0.945);
+    font-weight:bold ;
+    background-color: #05091c;
+
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 50px 20px 0;
+    
+
+}
+.nivel pre{
+    margin: 2%;
+}
+.nivel h3{
+    font-size: 20px;
+    text-decoration: underline;
+}
+.codigo{
+    background-color:#374cb84f;
+    color:purple;    
+    font-size: 14px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 15px 20px 0;
+}
 
 /*previews*/
 .previews{
@@ -191,7 +218,9 @@ hr{
 /**/
 @media (max-width:768px){
     body{
+        width: 100vw;
         padding-top: 70px;
+        position: relative;
     }
     .header{
         height: 60px;
