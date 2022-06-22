@@ -78,11 +78,19 @@ hr{
     cursor: pointer;
 }
 
-.container{
-  
+.container{    
     margin: auto;
     display: grid;
     grid-template-columns: 1fr;
+}
+.container h1{
+   
+    font-size: 40px;
+    font-weight: bold;
+    padding: 0 70px;
+    line-height: 80px;
+    text-align: center;
+
 }
 
 /*Navigation*/
@@ -133,7 +141,11 @@ hr{
     display: none;/*esto hace que en web de escritorio no se vea este icono, solo en móviles*/
     cursor: pointer;
 }
-
+/*Central*/
+.central{
+    display: block;
+    margin: 5%;
+}
 
 /*previews*/
 .previews{

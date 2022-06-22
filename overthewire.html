@@ -1,0 +1,757 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Scripting in Bash</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 3px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	text-indent: -1.7em;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-block;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1.25em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(55, 53, 47, 1);
+}
+.highlight-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.highlight-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.highlight-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.highlight-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.highlight-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.highlight-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.highlight-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.highlight-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.highlight-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.highlight-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.highlight-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.highlight-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.highlight-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.highlight-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.highlight-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(120, 119, 116, 1);
+	fill: rgba(120, 119, 116, 1);
+}
+.block-color-brown {
+	color: rgba(159, 107, 83, 1);
+	fill: rgba(159, 107, 83, 1);
+}
+.block-color-orange {
+	color: rgba(217, 115, 13, 1);
+	fill: rgba(217, 115, 13, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 145, 47, 1);
+	fill: rgba(203, 145, 47, 1);
+}
+.block-color-teal {
+	color: rgba(68, 131, 97, 1);
+	fill: rgba(68, 131, 97, 1);
+}
+.block-color-blue {
+	color: rgba(51, 126, 169, 1);
+	fill: rgba(51, 126, 169, 1);
+}
+.block-color-purple {
+	color: rgba(144, 101, 176, 1);
+	fill: rgba(144, 101, 176, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(212, 76, 71, 1);
+	fill: rgba(212, 76, 71, 1);
+}
+.block-color-gray_background {
+	background: rgba(241, 241, 239, 1);
+}
+.block-color-brown_background {
+	background: rgba(244, 238, 238, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 236, 221, 1);
+}
+.block-color-yellow_background {
+	background: rgba(251, 243, 219, 1);
+}
+.block-color-teal_background {
+	background: rgba(237, 243, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(231, 243, 248, 1);
+}
+.block-color-purple_background {
+	background: rgba(244, 240, 247, 0.8);
+}
+.block-color-pink_background {
+	background: rgba(249, 238, 243, 0.8);
+}
+.block-color-red_background {
+	background: rgba(253, 235, 236, 1);
+}
+.select-value-color-pink { background-color: rgba(245, 224, 233, 1); }
+.select-value-color-purple { background-color: rgba(232, 222, 238, 1); }
+.select-value-color-green { background-color: rgba(219, 237, 219, 1); }
+.select-value-color-gray { background-color: rgba(227, 226, 224, 1); }
+.select-value-color-opaquegray { background-color: rgba(255, 255, 255, 0.0375); }
+.select-value-color-orange { background-color: rgba(250, 222, 201, 1); }
+.select-value-color-brown { background-color: rgba(238, 224, 218, 1); }
+.select-value-color-red { background-color: rgba(255, 226, 221, 1); }
+.select-value-color-yellow { background-color: rgba(253, 236, 200, 1); }
+.select-value-color-blue { background-color: rgba(211, 229, 239, 1); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="b622e3a7-397d-4850-95ed-7e11ab83929b" class="page sans"><header><h1 class="page-title">Scripting in Bash</h1></header><div class="page-body"><p id="c007dd57-b441-4697-936e-2ef433e01700" class="">
+</p><h1 id="b2427607-cb8c-40cb-9d6c-61d625ee6067" class="">Página para practicar: overthewire.org</h1><p id="81fec4ee-e436-42ca-be6e-4ee5121ce16b" class="">
+</p><h2 id="d94e9aea-89b4-40ab-aca9-b74b131e7449" class="">Bandit </h2><h3 id="fbd8fea2-b880-42dc-a2a9-f2a1bff3780d" class="">Level 0</h3><p id="fd0df3c5-6fa9-44c6-be86-03f2477e72e0" class="">conectar por ssh por el host <a href="http://bandit.labs.overthewire.org"><strong>bandit.labs.overthewire.org</strong></a><strong> y el puerto</strong> 2220.</p><p id="df62636f-73f5-429d-9937-cce5d2470e3e" class="">ssh badit0@<a href="http://bandit.labs.overthewire.org"><strong>bandit.labs.overthewire.org</strong></a><strong> -p 2220</strong></p><p id="015de001-3def-4eff-b42d-daa75925b633" class="">
+</p><h3 id="c7c85e71-a398-48d0-85ac-e81a15987168" class="">Level 1-3</h3><p id="834b8518-3f04-4583-bdc2-1dcf07172f60" class="">abrir un fichero llamado - </p><p id="68c10bc3-fbd7-4a40-b720-db6029d00516" class="">cat ./-</p><p id="60979fc6-f1e9-46e4-8f38-898957c0e506" class="">
+</p><p id="dcfae8c3-76fe-494e-bbc7-8864b450d374" class="">para abrir un archivo con espacios en su nombre</p><p id="fa86344c-c0a5-4ea1-b100-0fad2f06c203" class="">cat spaces\ in\ this\ filename</p><p id="0f697fc7-2ab9-40da-9dee-b1bdcec8b79b" class="">
+</p><h3 id="13767992-d15b-4f73-9dd1-4463eee771da" class="">Level 4</h3><p id="fcd138b3-a152-408b-a06d-71cfe1bf5fb1" class="">En este hay que buscar la flag entre varios archivos</p><p id="68a383c8-11b1-4bd7-99e8-e120632fad18" class="">mediante un cat ./* me saca la información de todos los archivos</p><p id="284be273-94ef-4d91-b246-215c75eae7b6" class="">y de ahí saco la flag</p><h3 id="2575aa08-bde4-418c-8562-65bab5873bac" class="">Level 5</h3><p id="d5c5c18b-6e4b-4fcd-98ae-31b90e7dd434" class="">En este nivel aparecen varios directorios con muchos ficheros y hay que filtrar encontrando el fichero que cumpla las siguientes caracteristicas:</p><p id="bccbdbce-1880-4dbb-9dc8-789387cc80e5" class="">-human-readable</p><p id="61ddc93e-4936-44b4-9a64-79ca113c641d" class="">-1033 bytes in size</p><p id="4cc46d67-9e55-4e05-863e-ac0faab2249d" class="">-not executable</p><p id="80d63243-c777-4fa2-bccc-e04612700816" class="">Para ello se puede filtrar con el comando find</p><p id="93e8d572-04ed-4fd2-a988-15efc8777bda" class="">find ./inhere type -f (con esto indico que busque los ficheros) -readable ! -executable -size 1033c (para indicar que son bytes hay que poner la c)</p><p id="229c507f-bbee-4763-9048-e5ad5e94dc13" class="">
+</p><h3 id="9f385609-4b2c-4f2a-bdc1-6503da4b01bd" class="">Level 6</h3><p id="5502c1c4-3276-4556-9d38-22d8c17cbb92" class="">La contraseña se encuentra en un archivo en algún lugar del servidor</p><p id="24c42d7c-6c18-40a0-8652-c20242fb4204" class="">para ello uso el comando find pero desde la raiz</p><p id="f06e7d10-bbb9-48ed-baf2-00eb3eff775b" class="">find / -size 33c -user bandit7 -group bandit6 2&gt;/dev/null | xargs cat</p><p id="b46c498a-9d49-414d-b484-253c392a40a7" class="">Con el user indicamos quien es el creador del archivo, con el group a que grupo pertenece</p><p id="a07d33d9-2d42-4033-9b3a-eff0daedbc13" class="">Con el comando 2&gt;/dev/null lo que hago es mandar los errores a una especie de agujero negro</p><p id="c0abba74-1302-4187-ae64-441c809f634c" class="">y leo el contenido del archivo con el comando xargs cat</p><p id="826d1bf2-49bd-416c-9e80-123c12a07dcd" class="">mediante el comando xargs lo que hacemos es usar la salida del comando previo a la pipa |, esta salida se almacena en xargs que se usará como argumento del segundo comando. </p><p id="9bb9dfce-531b-46e2-b6c3-c841595361c3" class="">En este caso lo que sale del primer comando de búsqueda se almacena en xargs y a esto se le hace un cat para leer el contenido. </p><h3 id="f4fa7a5d-a575-4c95-81ee-d4cb2451846b" class="">Level 7</h3><p id="c4eb1b36-98d7-4ce5-aed8-70d0456e1892" class="">La flag está en el archivo data.txt y cerca de la palabra millionth </p><p id="824d5483-0122-4035-8bca-b35b29804d99" class="">Para filtrar el contenido del archivo uso el comando grep</p><p id="03573d33-1fb3-4f8a-9691-cadb1214fc0a" class="">grep millionth data.txt </p><p id="8dc324ff-c7b8-4ce3-aef4-59a96226bc73" class="">y con esto obtengo la flag.</p><h3 id="3c12e098-f1b0-47b0-b9ce-a4bc7e2375f9" class="">Level 8</h3><p id="01dee4c8-516b-4520-a052-91ff4837418c" class="">La flag está almacenada en data.txt pero será aquella línea que no se repite</p><p id="1498b9db-31d2-4a81-807d-952c77dd205a" class="">para ello hya que usar el comando uniq -u que nos devuelve las cadenas que son únicas, pero para ello primero hay que ordenarlas ya que este comando no es capaz por si solo de detectar cadenas repetidas desordenadas. Para ordenarlo primero usamos el comando sort</p><p id="3cf4eeab-298c-4c11-ae4b-3e91eb6a21c4" class="">cat data.txt | sort | uniq -u</p><h3 id="5331c11c-b2ac-4853-8211-2da8e7bb7e15" class="">Level 9</h3><p id="540a4cf1-2d88-4753-ad34-54cf4e15e9be" class="">En este nivel nos dice que la flag está en el archivo data.txt </p><p id="05b3294d-5980-4a93-9732-837fd2e564c9" class="">en una cadena legible y precedida de varios ‘=’</p><p id="979620db-7638-405e-a60d-eb2584be3af9" class="">Para sacar las cadenas legibles podemos usar el comando: </p><p id="089e30a4-b8a9-4abc-b641-d9ec4d70fbfd" class="">strings data.txt</p><p id="b6cdded5-8b0a-4b0a-be72-8d6a5d15599a" class="">luego podemos filtrar el resultado para que saque solo las que empiezen por “===”</p><p id="ee324bfe-c68f-47c0-a75b-2e40e0057d03" class="">strings data.txt | grep “===”</p><h3 id="d1a19583-6998-445c-8295-6f2b0903f372" class="">Level 10</h3><p id="f5080b16-c95c-4de5-9b9a-35fcd89bc9d4" class="">La contraseña esta en data.txt pero el contenido está cifrado en base64</p><p id="d2df7885-c844-40e1-80ab-e670a08e2b1c" class="">para decodificarlo se usa el siguiente comando</p><p id="e3e708ef-b55d-4acb-b56c-90205ef717a2" class="">base64 -d data.txt</p><p id="f75bc62b-164f-4286-ab44-9ea40bb19806" class="">
+</p><h3 id="89c18748-de75-452d-8d64-34bab0b930f5" class="">Level 11</h3><p id="d05bf500-536b-4339-9013-7d77f2607116" class="">La contraseña está en data.txt pero está cifrada, habiendo rotado sus letras 13 posiciones. Para decodificarla podemos usar el comando tr (translate)</p><p id="99f821a9-fd05-4d53-8f79-0bd4e4f8f541" class="">cat data.txt | tr ‘[A-za-z]’ ‘[N-ZA-Mn-za-m]’</p><p id="27c54eab-c29a-476c-9511-07e7b7a735d5" class="">con esto sustituimos el contenido del contenido del data.txt por las letras correspondientes a rotar el abecedario 13 posiciones.</p><p id="98d55cb2-2e5e-480f-aee6-da714d826784" class="">
+</p><h3 id="6a44afaa-0b1a-4831-b62d-91ca7331869f" class="">Level 12</h3><p id="d988928b-cbab-4925-a90e-1d009d607094" class="">En este nivel la flag está en el archivo data.txt que es un hexadump, es decir, el contenido está en hexadecimal. Para pasarlo a ASCII usamos el comando xxd -r de la siguiente manera</p><p id="b968d9ac-fa31-44b3-8435-8e2d52b9f19a" class="">cat data.txt | xxd -r </p><p id="01ad2edf-3bf7-4a3f-96fc-be50100ccda0" class="">El resultado se guarda en un archivo que mediante el comando file vemos que es un gzip. </p><p id="4b835344-da95-4344-9f8b-a3b55a654387" class="">Y aquí es donde empieza el anidamiento de comprimidos. </p><p id="63f54668-a911-4799-9949-38e49304c4b0" class="">Para descomprimir todos creo un script que se guarda con la extensión .sh y que sería el siguiente: </p><pre id="199a31e1-fbc8-4f61-9aa1-c8fcd6fb9d44" class="code"><code>#!/bin/bash
+
+
+name_compressed=$(7z l content.gzip | grep &quot;Name&quot; -A 2 | tail -n 1 | awk &#x27;{print $NF}&#x27;)
+7z x content.gzip &gt; /dev/null 2&gt;&amp;1
+while true; do
+        7z l $name_compressed &gt; /dev/null 2&gt;&amp;1
+
+        if [ &quot;$?&quot; -eq 0 ]; then 
+                decompressed_next=$(7z l $name_compressed  | grep &quot;Name&quot; -A 2 | tail -n 1 | awk &#x27;NF{print $NF}&#x27;)
+                7z x $name_compressed &gt; /dev/null 2&gt;&amp;1 &amp;&amp; name_compressed=$decompressed_next
+        else
+                exit 1
+        fi
+done</code></pre><p id="4fe53be6-f605-4379-b8b8-d5aef2467768" class="">La primera línea declara el script </p><p id="9b56d40f-6a18-479a-b8d2-0102bff3ce27" class="">En la segunda línea el comando 7z l content.gzip muestra el contenido del archivo: </p><pre id="b33f13cb-f748-49a1-98ad-d7f26b57b994" class="code"><code>7-Zip [64] 16.02 : Copyright (c) 1999-2016 Igor Pavlov : 2016-05-21
+p7zip Version 16.02 (locale=es_ES.UTF-8,Utf16=on,HugeFiles=on,64 bits,4 CPUs AMD Ryzen 7 5700U with Radeon Graphics          (860F81),ASM,AES-NI)
+
+Scanning the drive for archives:
+1 file, 606 bytes (1 KiB)
+
+Listing archive: content.gzip
+
+--
+Path = content.gzip
+Type = gzip
+Headers Size = 20
+
+   Date      Time    Attr         Size   Compressed  Name
+------------------- ----- ------------ ------------  ------------------------
+2020-05-07 14:14:30 .....          573          606  data2.bin
+------------------- ----- ------------ ------------  ------------------------
+2020-05-07 14:14:30                573          606  1 files</code></pre><p id="26baa4da-8696-4cd5-ae66-41cedaad3a8d" class="">Para filtrar esto y obtener el nombre del archivo que contiene el zip usamos el grep por el “Name” y nos dará la línea donde encuentra la coincidencia, pero mediante el parámetro -A (after) podemos decirla el número de líneas, contando desde esta, que queremos seleccionar, en este caso dos más abajo.</p><p id="a0448b73-e85a-419d-a404-6833e3cf6d97" class="">grep “Name” -A 2 </p><p id="2c9a5e04-c84b-4137-8b88-0a0b0a0041ed" class="">  </p><pre id="8487f94e-666f-4c30-a9ad-7959967d6624" class="code"><code>Date      Time    Attr         Size   Compressed  Name
+------------------- ----- ------------ ------------  ------------------------
+2020-05-07 14:14:30 .....          573          606  data2.bin</code></pre><p id="5ceb8d68-062d-4793-821a-ce9c36b525ae" class="">Ahora necesitamos filtrar desde aquí, la última línea con el comando tail -n 1</p><pre id="648a6457-ee20-4d7b-bb17-7882c42ec639" class="code"><code>7z l content.gzip | grep &quot;Name&quot; -A 2 | tail -n 1
+2020-05-07 14:14:30 .....          573          606  data2.bin</code></pre><p id="f2b392cd-3d81-48c7-bf7e-d60fd52bb125" class="">Para seleccionar la última parte de la línea y quedarnos con el nombre del fichero que contiene usamos el comando awk que permite procesar y modificar el texto</p><p id="56045d74-1208-4994-9dd1-0079e3dc65db" class="">Para seleccionar el último parámetro utilizamos el atributo NF</p><pre id="d4c0e986-6901-433d-8537-1c98e95b1dd1" class="code"><code>7z l content.gzip | grep &quot;Name&quot; -A 2 | tail -n 1 | awk &#x27;{print $NF}&#x27;
+data2.bin</code></pre><p id="3fad2844-37cb-4269-bc92-7c655a740e23" class="">Ya tendríamos el nombre del archivo almacenado en la variable name_compressed</p><p id="a681fb92-ec8f-4ecf-a8ae-4259d783e2dc" class="">Ahora podemos descomprimir el archivo mediante el comando 7z x archivo.gzip, enviando los errores (stderr ‘2’, canal por el que se envía un mensaje de error en caso de su ejecución falle) y la salida estándar (stdout ‘1’, datos que vuelca el comando o programa durante su ejecución) a /dev/null mediante el comando </p><pre id="883dcd3f-7d48-4b6a-b2aa-9ae898e34b03" class="code"><code>7z x content.gzip &gt; /dev/null 2&gt;&amp;1</code></pre><p id="a30a232d-bf4f-4ae2-a1b2-fcde9321b470" class="">Otra salida de datos que existe es la entrada estándar (stdin ‘0’, que son los datos enviados al programa).</p><p id="299d2072-c1bf-4dca-9735-0570ded41bc9" class="">Creamos un bucle infinito y dentro de este listamos el contenido del archivo cuyo nombre hemos almacenado en name_compressed,</p><p id="30b46681-28cc-4512-b4e8-359583464d38" class="">Mediante el comando $? comprobamos que la salida de la ejecución sea 0, es decir que se listó correctamente. Si es así descomprimo y actualizó la variable name_compressed con el nombre del archivo que se encuentra dentro del archivo que acabamos de descomprimir. </p><p id="f29e1def-02b3-4ad8-ad78-0b5dbef0f590" class="">Si el resultado es 1, es decir que ha habido un error porque el archivo no es un comprimido se rompe el bucle y termina el programa. </p><h3 id="637ecb7d-d38f-4856-8db0-3dc0b37d0c61" class="">Level 13</h3><p id="dade9963-d49c-4e1a-b567-e50d3f61ceba" class="">La flag está guardada en <strong>/etc/bandit_pass/bandit14  </strong>pero solo puede ser leída por el usuario bandit14. </p><p id="151cd3bc-08a4-43ff-bc5c-1c7470a78367" class="">El el directorio actual tenemos un archivo que es un clave privada.</p><p id="d9b6a37f-87e1-4905-b98b-655cf929b9eb" class="">La idea de este reto es conectarse al localhost, es decir a nuestra propia máquina, pero como bandit14. Para esto usamos el archivo con la clave privada. </p><p id="6ac90c67-667d-4142-86d7-b856988d1e7c" class="">(Nota: se puede generar claves privadas mediante el comando ssh-keygen, esto crea una privada y otra pública)</p><p id="a9a04082-fab0-41f5-bb04-4ad2b7505d7b" class="">En primer lugar hay que activar un componente en el archivo /etc/ssh/sshd_config, </p><pre id="3bca2c0a-4673-4b3f-b158-bf779fd9a9d1" class="code"><code>PermitRootLogin yes</code></pre><p id="9d9b643b-9d76-4e5e-9b94-80351e7006d7" class="">Después hay que activar el ssh mediante el comando </p><p id="ced99b3c-ee47-40ef-af58-1a68ac867bca" class="">service ssh start</p><p id="bc2d43aa-0e97-410e-b32b-5acdf45b7efe" class="">Podemos comprobar que se ha activado correctamente mediante </p><p id="4848214d-d4fe-4c25-95d5-6061d412c2b3" class="">service ssh status</p><p id="76c057a7-7bbe-4ad2-b892-95b479bb445f" class="">
+</p><p id="ab162954-70e8-4f52-8d7b-93e6ca5b6db6" class="">Para permitir el acceso por ssh mediante el usuario bandit14 podemos copiar la clave publica en el directorio de ssh con el nombre de authorized_keys </p><pre id="be803a84-8f6c-49b3-8456-1afb35de6623" class="code"><code>cp clavepublica.pub authorized_keys</code></pre><p id="6caec853-57e0-42ad-abd2-c6d0e257dc45" class="">O bien mediante la clave privada y el comando ssh-copy-id se convierte en un fichero de identidad autorizada</p><pre id="4d0e555a-7c65-4c50-a27b-70251c7b7b96" class="code"><code>ssh-copy-id -i claveprivada bandit14@localhost</code></pre><p id="37a4bf20-265e-4b32-bb0c-41137a3531f1" class="">una vez hecho esto se puede hacer uso de este fichero de clave privada, es decir pasando este fichero, un usuario se puede conectar a tu equipo sin necesidad de proporcionar contraseña. </p><p id="ff67f261-9ef5-430f-b5f1-2d3571b06c4e" class="">Con el fichero de claveprivada nos conectamos al usuario bandit14 </p><pre id="9a66b560-dce8-4df2-8122-53593da9d85c" class="code"><code>ssh -i claveprivada bandit14@localhost</code></pre><p id="4d566602-8b15-4444-867f-7d1002dc969b" class="">
+</p><h3 id="62d9534a-61ee-47be-a3da-796bb73bd82e" class="">Level 14</h3><p id="8a5e00bb-1d60-4409-817b-0d80dcb83858" class="">Pide que enviemos mediante el puerto 30000 la contraseña del nivel anterior y nos devolverá la contraseña del siguiente nivel</p><p id="ec0cd62c-36fd-4ff0-83da-06a6028f4428" class="">Para ello podemos enviarla por Netcat (nc) que es un comando para leer o escribir datos a traves de la conexión</p><p id="029085a7-313f-434f-8cb8-e301de2b3c54" class="">Para ello podemos escribir lo siguiente </p><pre id="fe8118ca-26c2-458d-a2c7-1544cecae908" class="code"><code>echo &quot;4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e&quot; | nc localhost 30000
+Correct!
+BfMYroe26WYalil77FoDi9qh59eK5xNr</code></pre><p id="163f2a00-97c9-4a49-9d6f-73bbc2df01ce" class="">También podemos entrar mediante el puerto 30000 con el comando: </p><pre id="b57fecee-ae37-4328-9508-2a1af66b6a19" class="code"><code>bandit14@bandit:~/.ssh$ telnet localhost 30000
+Trying 127.0.0.1...
+Connected to localhost.
+Escape character is &#x27;^]&#x27;.
+Correct!
+BfMYroe26WYalil77FoDi9qh59eK5xNrWrong! Please enter the correct current password
+Connection closed by foreign host.
+bandit14@bandit:~/.ssh$ BfMYroe26WYalil77FoDi9qh59eK5xNr</code></pre><p id="df18de15-2c34-455b-a2b8-f7e8e7c227ad" class="">Y nos devuelve la siguiente contraseña</p><h3 id="dba5993a-805d-48b6-898a-fd7b2267dd66" class="">Level 15</h3><p id="6516b3ef-51f0-4d6e-b2eb-091804887408" class="">Ahora nos tenemos que conectar al puerto 30001 pero mediante protocolo de cifrado ssl.</p><p id="d0cc144f-568a-4544-9c34-4dda53ce6f0f" class="">Para ello nos conectamos por openssl de la siguiente forma</p><pre id="b84bb9bf-513b-4f9a-9352-d1ba514d2fcc" class="code"><code>openssl s_cliente -connect 127.0.0.1:30001</code></pre><p id="b0a172e5-4ba9-4b37-96a8-95810a21a9cf" class="">Escribimos la contraseña una vez establecida la conexión y nos devuelve la nueva. </p><h3 id="ae057ba8-3ec0-45ae-a9c4-41a05c831af5" class="">Level 16</h3><p id="882a9708-72d0-4e27-a2cd-2b3c586c7a73" class="">En este caso nos pide rastrear los puertos abiertos del <a href="http://localhost">localhost</a> en el rango desde el 31000 hasta el 32000 y solo uno de ellos tendrá protocolo ssl que es al que nos tenemos que conectar. </p><p id="2141929a-cfa8-479a-9917-3c20bf77b193" class="">Para rastrear los puertos abiertos le paso el comando </p><pre id="69218b7b-3e32-4e56-bd46-b354f264df5e" class="code"><code>namp -p 31000-32000 localhost
+
+Starting Nmap 7.40 ( https://nmap.org ) at 2022-06-21 17:38 CEST
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.00022s latency).
+Not shown: 996 closed ports
+PORT      STATE    SERVICE
+31046/tcp open     unknown
+31518/tcp filtered unknown
+31691/tcp open     unknown
+31790/tcp open     unknown
+31960/tcp open     unknown
+
+</code></pre><p id="72a7d9d5-2c12-4c4d-8026-971138503b6c" class="">
+</p><p id="4d570496-3a8c-43bf-a7d5-92ec9513c831" class="">probamos la conexión mediante ssl de los puertos abiertos hasta que nos conectamos</p><pre id="5afbe0d5-9a96-4063-b059-c341fffda6c9" class="code"><code>openssl s_client -connect 127.0.01:31790</code></pre><p id="17efb2a0-deb0-4692-b33f-4a586a7137da" class="">Escribimos la contraseña del nivel actual: cluFn7wTiGryunymYOu4RcffSxQluehd</p><p id="3d1e7c3e-8ced-4f71-8c8c-159573598254" class="">esto nos devuelve una clave privada rsa con la cual se nos permitirá conectarnos por ssh al siguiente nivel</p><p id="6e73bf14-f1a3-44dc-9662-911538253201" class="">Para ello creamos un directorio temporal mediante el comando </p><pre id="13ede060-a54e-489c-b3ff-211d1c954c7f" class="code"><code>mktemp -d
+/tmp/tmp.LngNBOdqbW</code></pre><p id="bfa9e9c9-8f10-4896-8f67-7580fe61d89c" class="">En ese directorio creamos un archivo donde almaceno la clave rsa , la cual necesita permiso 600, es decir solo el usuario tendrá permisos de lectura y escritura. </p><p id="68a066c5-c61f-4e0b-be6d-fdc0c227bc5c" class="">Y la utilizo mediante el comando </p><pre id="fed8717a-1682-4465-a788-9fe499f74fae" class="code"><code>ssh -i id_rsa bandit17@localhost</code></pre><h3 id="33fc7166-4717-4fe3-81f9-04e0a750394e" class="">Level 17</h3><p id="d63aa99c-3fa0-48f7-b079-ec294a1f6ba4" class="">Hay dos archivos en el directorio, y la flag está en uno de ellos siendo la única línea que no está en el otro archivo</p><pre id="064bf073-bd6c-4a6c-a547-c45a76d8afba" class="code"><code>diff -a passwords.new passwords.old
+42c42
+&lt; kfBf3eYk5BPBRzwjqutbbfE887SVc5Yd
+---
+&gt; w0Yfolrc5bwjS4qw5mq1nnQi6mF03bii</code></pre><p id="b5e5c6f8-9ffb-401f-a755-385fab305c90" class="">La contraseña es: kfBf3eYk5BPBRzwjqutbbfE887SVc5Yd</p><p id="3fcfc936-3ff1-4823-b5f9-b97b7aa3ef23" class="">
+</p><h3 id="ba313ac0-efaa-4591-b62b-51408dceb78e" class="">Level 18</h3><p id="09c8b006-2cb5-417d-bb76-5ec6c4314a64" class="">En este nivel la flag está en un fichero readme pero se ha modificado el fichero .bashrc para expulsarnos del servidor tras conectarnos. </p><p id="fb118c7b-1c75-42b5-92eb-a0278150dbff" class="">Para esto hay un comando en ssh que simula una bash y si se ejecuta a la vez que nos conectamos no da tiempo de ejecutarse el fichero .bashrc para que nos eche, pudiendo leer el readme </p><pre id="27e7e1e1-629c-4a89-a7e0-3c1692f6e44f" class="code"><code>└─$ ssh bandit18@bandit.labs.overthewire.org -p 2220 bash
+This is a OverTheWire game server. More information on http://www.overthewire.org/wargames
+
+bandit18@bandit.labs.overthewire.org&#x27;s password: 
+ls
+readme
+cat readme
+IueksS7Ubh8G3DCwVzrTd8rAVOwq3M5x</code></pre><h3 id="5b93f86e-ffdf-4d3c-add8-6aeb1a871625" class="">Level 19</h3><p id="3ea26119-b17f-484e-9a75-9411446c7149" class="">En este nivel nos da un archivo binario ejecutable que nos da acceso como usuario bandit20</p><p id="b94a36f9-1950-41a5-964e-5bce4c9f1f0a" class="">Esto se debe utilizar para abrir el fichero donde se encuentra la flag. </p><p id="cfb00069-0bdd-44da-980a-8da71fa79e09" class="">Para ello ejecutamos el archivo ./bandit20-doid (esto nos da permiso de usuario bandit20) y le hacemos un cat al contenido del archivo donde está la flag</p><pre id="f5fad863-7f92-404c-88d9-ac236bf0126f" class="code"><code>./bandit20-do cat /etc/bandit_pass/bandit20</code></pre><h3 id="3b0f3447-fcbc-4cc4-bcf5-e889cf55d80c" class="">Level 20 </h3><p id="db409f9d-eb04-47a8-b62a-afc22bf84575" class="">En este nivel tenemos un setuid binario que contiene un programa que nos conecta al puerto que le digamos. Hay que enviarle a través de ese puerto la contraseña del nivel actual y nos devuelve la contraseña para el siguiente. </p><p id="6366e4a0-4c1f-4a9f-8b94-fed5a44c0d0a" class="">Para esto hay que ponerse en escucha en un puerto que elijamos mediante el comando nc -nlvp 5757, de esta forma las salidas por consola de avisos aparecen por este canal, ya que de forma contraria toma estas salidas como intento de contraseña y da error y cierra la conexión.</p><p id="85ae77d1-7396-4aaa-91f8-056a268f2f0b" class="">En otra consola también conectada a bandit20 usamos el archivo de conexión por el mismo puerto 5757. </p><p id="9b386814-91ef-4c91-97d2-f4dba28766a3" class="">De esta forma nos permite escribir en el primer canal que se mantiene en escucha, la contraseña y nos devuelve la nueva sin llegar a cerrar el canal que abrimos con el archivo.</p><p id="4ec74b71-2485-4702-aafd-99096562810e" class="">
+</p><p id="83c8f4e9-f9b1-4650-8de0-c9a5c7e48249" class="">gE269g2h3mw3pwgrj0Ha9Uoqen1c9DGr</p><pre id="8c75f1d3-e132-4864-aca7-9939f373ddd1" class="code"><code>bandit20@bandit:~$ nc -nlvp 5757
+listening on [any] 5757 ...
+connect to [127.0.0.1] from (UNKNOWN) [127.0.0.1] 37960
+GbKksEFF4yrVs6il55v6gwY5aVje5f0j
+gE269g2h3mw3pwgrj0Ha9Uoqen1c9DGr</code></pre><pre id="93da9aa6-c12e-4167-8a8d-16478aabe739" class="code"><code>bandit20@bandit:~$ ./suconnect 5757
+Read: GbKksEFF4yrVs6il55v6gwY5aVje5f0j
+Password matches, sending next password</code></pre><h3 id="221cef2f-b14e-4a75-bc60-ef4351b2f81f" class="">Level 21</h3><p id="526973fe-0e4b-481a-ad0a-29a42479f6b1" class="">gE269g2h3mw3pwgrj0Ha9Uoqen1c9DGr</p></div></article></body></html>
