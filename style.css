@@ -2,40 +2,34 @@
     box-sizing: border-box;
     margin:0;
     padding: 0;    
-    
 }
 body{
-   
-    color:rgb(194, 195, 241);
-    font-weight:bold ;
-    background-color: #05091c;
-
+    color:#c5c6c7;
+    background-color:#0b0c10;      
     font-size: 16px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     padding: 90px 20px 0;
 }
 a{
-    color:rgb(128, 128, 138);
     text-decoration: none;
 }
 hr{
     margin: 20px 20px;
+    border-top:1px solid #66fcf1;
 }
 .header{
     position: fixed;
     width: 100%;
     top:0;
     left: 0;
-
 }
-.nav{
+.nav{    
     display: flex;
     justify-content: space-between;
     max-width: 992px;
     margin:0 auto;
 }
 .nav-link{
-    color:white;
     text-decoration: none;
 }
 .logo{
@@ -51,11 +45,12 @@ hr{
     list-style: none;
 }
 .nav-menu-item{
+    
     font-size: 18px;
     margin:0 10px;
     line-height: 80px;
     text-transform: uppercase;
-    width: max-content;/*evita que se pierda palabras si un enlace tiene más de una (sobre mí)*/
+    width: max-content;/*evita que se pierda palabras si un enlace tiene más de una ('sobre mí')*/
 }
 .nav-menu-link{
     padding: 8px 12px;
@@ -64,11 +59,11 @@ hr{
 .nav-menu-link:hover,
 .nav-menu-link_active{
   color: #034574;
-  background-color: aliceblue;
+  background-color: #c5c6c7;
   transition: 0.5s;
 }
 .nav-toggle{
-    color:white;
+    
     background: none;
     border: none;
     font-size: 30px;
@@ -78,139 +73,151 @@ hr{
     cursor: pointer;
 }
 
-.container{    
+.container{       
     margin: auto;
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: center; 
+    
+  
 }
 .container h1{
    
-    font-size: 40px;
+    color:#66fcf1;    
+    font-size: 60px;
     font-weight: bold;
-    padding: 0 70px;
+    padding: 50px 50px;
     line-height: 80px;
     text-align: center;
 
 }
-
-/*Navigation*/
-.nav{
-    display: flex;
-    justify-content: space-between;
-    max-width: 992px;
-    margin:0 auto;
-}
-.nav-link{
-    color:white;
-    text-decoration: none;
-}.logo nav-link{
-    font-size: 30px;
-    font-weight: bold;
-    padding: 0 40px;
-    line-height: 80px;
-}
-.nav-menu{
-    display: flex;
-    margin-right: 40px;
-    list-style: none;
-}
-.nav-menu-item{
-    font-size: 18px;
-    margin:0 10px;
-    line-height: 80px;
-    text-transform: uppercase;
-    width: max-content;/*evita que se pierda palabras si un enlace tiene más de una (sobre mí)*/
-}
-.nav-menu-link{
-    padding: 8px 12px;
-    border-radius: 3px;
-}
-.nav-menu-link:hover,
-.nav-menu-link_active{
-  color: #034574;
-  background-color: aliceblue;
-  transition: 0.5s;
-}
-.nav-toggle{
-    color:white;
-    background: none;
-    border: none;
-    font-size: 30px;
-    padding: 0 20px;
-    line-height: 60px;
-    display: none;/*esto hace que en web de escritorio no se vea este icono, solo en móviles*/
-    cursor: pointer;
-}
 /*Central*/
-.central{
+.central{      
+    width: 100%;     
+    background-image: linear-gradient( #0b0c10, #1f2833);   
+    background-position: bottom;
+    background-size: cover ;
     display: block;
-    margin: 5%;
-}
-/*Bandit*/
-.nivel{
-   
-    color:rgba(194, 195, 241, 0.945);
-    font-weight:bold ;
-    background-color: #05091c;
-
-    font-size: 16px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    padding: 50px 20px 0;
-    
-
-}
-.nivel pre{
-    margin: 2%;
-}
-.nivel h3{
-    font-size: 20px;
-    text-decoration: underline;
-}
-.codigo{
-    background-color:#374cb84f;
-    color:purple;    
-    font-size: 14px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    padding: 15px 20px 0;
+    padding: 15px;
 }
 
 /*previews*/
 .previews{
-    display: flex;
-    grid-template-columns: repeat(4, 1fr);
-    gap:25px;
-    margin:10px 0;
+    display: inline-flex;   
+    
+    margin:auto;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    
 }
 .miniatura{
     padding: 10px;
     text-align: center;
+    background-color: #1f2833;  
+    border:2px solid #66fcf1;
+    width: 22%;
 }
 
 .previews img{
-    width: 300px;
+    width: 100%;
     height: 50%;
-    padding: 30px;
+    padding: 20px;
 }
 .previews h3{
-    font-size: 20px;
+    color: #66fcf1;
+    font-size: 23px;
+    font-weight: bold;
     margin:10px 0;
 }
 .previews a{
     display: inline-block;
     padding: 10px 0;
-    color: darkmagenta;
+    font-size: 12px; 
+    font-weight: bold;    
+    color: #66fcf1;
+    
     text-transform: uppercase;
 }
-.previews a:hover{
+.previews a:hover{ /*hover cambia la acción cuando se pasa el ratón por encima*/
     text-decoration: underline;
 }
+
+/*Navigation*/
+.nav{
+    background-color: #1f2833;
+    
+   
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    margin:0 auto;
+    border-bottom: 1px solid #66fcf1;  
+}
+.nav-link{
+    font-weight:bold ;
+    color:#66fcf1;     
+    text-decoration: none;
+}
+.logo nav-link{
+    font-weight:bold ;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 0 40px;
+    line-height: 80px;
+}
+.nav-menu{    
+    display: flex;
+    margin-right: 40px;
+    list-style: none;
+}
+.nav-menu-item{
+     
+    font-size: 18px;
+    margin:0 10px;
+    line-height: 80px;
+    text-transform: uppercase;
+    width: max-content;/*evita que se pierda palabras si un enlace tiene más de una (sobre mí)*/
+}
+.nav-menu-link{
+    padding: 8px 12px;
+    border-radius: 3px;
+}
+.nav-menu-link:hover,
+.nav-menu-link_active{
+  color: #1f2833;
+  background-color: #c5c6c7;
+  transition: 0.5s;
+}
+.nav-toggle{
+    color:#66fcf1;
+    background: none;
+    border: none;
+    font-size: 30px;
+    padding: 0 20px;
+    line-height: 60px;
+    display: none;/*esto hace que en web de escritorio no se vea este icono, solo en móviles*/
+    cursor: pointer;
+}
+
 
 /*futuro juego*/
 .futuro-juego{
     width: 100%;
     height: 350px;
-    background: url('./img/pexels-johannes-plenio-1114900.jpg');
+    background-image: "./img/camino.jpg"; 
+    padding: 15px;
     margin-bottom: 40px;
+}
+.futuro-juego h2{
+    color: #66fcf1;
+}
+.futuro-juego a{
+    display: inline-block;
+    padding: 10px 0;
+    font-size: 12px; 
+    font-weight: bold;    
+    color: #66fcf1;
+    text-transform: uppercase;
 }
 
 /**/
@@ -235,7 +242,7 @@ hr{
         flex-direction: column;
         align-items: center;
         margin:0;
-        background-color: #034574;
+        background-color: #0b0c10;
         position: fixed;
         left: 0;
         top:60px;
@@ -256,8 +263,9 @@ hr{
     
     .nav-menu-link:hover,
     .nav-menu-link_active{
-      color:darkorchid;
-      background: none;
+        background-color:#c5c6c7 ;
+        color: #1f2833;
+      
     }
     .nav-toggle{
         display: block;
@@ -265,4 +273,64 @@ hr{
     .nav-menu-visible{
         left: 0;
     }
+    /*previews*/
+  
+    .miniatura{
+        width: 90%;
+        margin: 5%;
+    }
+    /*bandit*/
+    .nivel pre{
+        overflow: scroll;
+    }
+    
+    
 }
+
+/*Bandit*/
+.nivel{
+   
+    color:#c5c6c7;
+    font-weight:bold ;
+    background-color: #0b0c10;
+
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    padding: 50px 20px 0;
+}
+.nivel pre{
+    
+    margin: 2%;
+    border:3px solid #66fcf1;
+   
+}
+.nivel h3{
+    font-size: 20px;
+    text-decoration: underline;
+    color: #66fcf1;
+    text-align: center;
+}
+.codigo{
+   
+    background-color: white;
+    background-image: linear-gradient( #0b0c10, #1f2833);  
+    color: #c5c6c7;    
+    font-size: 15px;
+    font-family:'Courier New', Courier, monospace;
+    padding: 15px 20px 0;
+   
+}
+.enlace-bandit{
+    color: #66fcf1;
+    text-align: center;
+    text-decoration: underline;
+    margin-top: 35px;;
+}
+.imagen-bandit{
+    display: block;
+    margin: auto;
+    width: 25%;
+    height: 10%;
+ 
+}
+
